@@ -239,10 +239,7 @@ void BarcodeItem::setAngle(const AngleType& angle)
     }
 }
 
-BarcodeItem::BorderType BarcodeItem::borderType() const
-{
-    return m_borderType;
-}
+BarcodeItem::BorderType BarcodeItem::borderType() const { return m_borderType; }
 
 void BarcodeItem::setBorderType(const BorderType value)
 {
@@ -256,10 +253,7 @@ void BarcodeItem::setBorderType(const BorderType value)
     }
 }
 
-int BarcodeItem::borderWidth() const
-{
-    return m_borderWidth;
-}
+int BarcodeItem::borderWidth() const { return m_borderWidth; }
 
 void BarcodeItem::setBorderWidth(const int value)
 {
