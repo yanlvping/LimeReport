@@ -45,7 +45,10 @@ class BarcodeItem: public LimeReport::ContentItemDesignIntf {
     Q_PROPERTY(QColor foregroundColor READ foregroundColor WRITE setForegroundColor)
     Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
     Q_PROPERTY(int whitespace READ whitespace WRITE setWhitespace)
+    Q_PROPERTY(int vWhitespace READ vWhitespace WRITE setWhitespace)
     Q_PROPERTY(AngleType angle READ angle WRITE setAngle)
+    Q_PROPERTY(BorderType borderType READ borderType WRITE setBorderType)
+    Q_PROPERTY(int borderWidth READ borderWidth WRITE setBorderWidth)
     Q_PROPERTY(int barcodeWidth READ barcodeWidth WRITE setBarcodeWidth)
     Q_PROPERTY(int securityLevel READ securityLevel WRITE setSecurityLevel)
     Q_PROPERTY(int pdf417CodeWords READ pdf417CodeWords WRITE setPdf417CodeWords)
@@ -166,14 +169,23 @@ public:
         KANJI_INPUT_MODE = 3,
         SJIS_INPUT_MODE = 4
     };
+
+    enum BorderType {
+        BARCODE_DEFAULT = 0,
+        BARCODE_BIND = 1,
+        BARCODE_BOX = 2,
+    };
+
 #if QT_VERSION >= 0x050500
     Q_ENUM(BarcodeType)
     Q_ENUM(AngleType)
     Q_ENUM(InputMode)
+    Q_ENUM(BorderType)
 #else
     Q_ENUMS(BarcodeType)
     Q_ENUMS(AngleType)
     Q_ENUMS(InputMode)
+    Q_ENUMS(BorderType)
 #endif
     BarcodeItem(QObject* owner, QGraphicsItem* parent);
     ~BarcodeItem();
@@ -197,8 +209,14 @@ public:
     void setBackgroundColor(QColor value);
     int whitespace() { return m_whitespace; }
     void setWhitespace(int value);
+    int vWhitespace() { return m_vWhitespace; }
+    void setVWhitespace(int value);
     AngleType angle() const;
     void setAngle(const AngleType& angle);
+    BorderType borderType() const;
+    void setBorderType(BorderType value);
+    int borderWidth() const;
+    void setBorderWidth(int value);
     int barcodeWidth() const;
     void setBarcodeWidth(int barcodeWidth);
     int securityLevel() const;
@@ -235,6 +253,9 @@ private:
     bool m_hideText;
     int m_option3;
     bool m_hideIfEmpty;
+    BorderType m_borderType;
+    int m_borderWidth;
+    int m_vWhitespace;
 };
 
 } // namespace LimeReport

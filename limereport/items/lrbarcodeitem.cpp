@@ -55,6 +55,7 @@ BarcodeItem::BarcodeItem(QObject* owner, QGraphicsItem* parent):
     m_foregroundColor(Qt::black),
     m_backgroundColor(Qt::white),
     m_whitespace(10),
+    m_vWhitespace(0),
     m_angle(Angle0),
     m_barcodeWidth(0),
     m_securityLevel(0),
@@ -62,7 +63,9 @@ BarcodeItem::BarcodeItem(QObject* owner, QGraphicsItem* parent):
     m_inputMode(UNICODE_INPUT_MODE),
     m_hideText(false),
     m_option3(0),
-    m_hideIfEmpty(false)
+    m_hideIfEmpty(false),
+    m_borderType(BARCODE_DEFAULT),
+    m_borderWidth(1)
 {
 }
 
@@ -81,9 +84,11 @@ void BarcodeItem::paint(QPainter* ppainter, const QStyleOptionGraphicsItem* opti
         bc.setText(m_designTestValue);
     else
         bc.setText(m_content);
+
     bc.setInputMode(m_inputMode);
     bc.setSymbol(m_barcodeType);
     bc.setWhitespace(m_whitespace);
+    bc.setVWhitespace(m_vWhitespace);
     bc.setFgColor(m_foregroundColor);
     bc.setBgColor(m_backgroundColor);
     bc.setWidth(m_barcodeWidth);
@@ -91,6 +96,8 @@ void BarcodeItem::paint(QPainter* ppainter, const QStyleOptionGraphicsItem* opti
     bc.setPdf417CodeWords(m_pdf417CodeWords);
     bc.setHideText(m_hideText);
     bc.setOption3(m_option3);
+    bc.setBorderType(m_borderType);
+    bc.setBorderWidth(m_borderWidth);
 
     if (isSelected())
         ppainter->setOpacity(Const::SELECTION_OPACITY);
@@ -207,6 +214,17 @@ void BarcodeItem::setWhitespace(int value)
     }
 }
 
+void BarcodeItem::setVWhitespace(int value)
+{
+    if (m_vWhitespace != value) {
+        const int oldValue = m_vWhitespace;
+        m_vWhitespace = value;
+        if (!isLoading()) {
+            update();
+            notify("vWhitespace", oldValue, value);
+        }
+    }
+}
 BarcodeItem::AngleType BarcodeItem::angle() const { return m_angle; }
 
 void BarcodeItem::setAngle(const AngleType& angle)
@@ -217,6 +235,40 @@ void BarcodeItem::setAngle(const AngleType& angle)
         if (!isLoading()) {
             update();
             notify("angle", oldValue, angle);
+        }
+    }
+}
+
+BarcodeItem::BorderType BarcodeItem::borderType() const
+{
+    return m_borderType;
+}
+
+void BarcodeItem::setBorderType(const BorderType value)
+{
+    if (m_borderType != value) {
+        const BorderType oldValue = m_borderType;
+        m_borderType = value;
+        if (!isLoading()) {
+            update();
+            notify("borderType", oldValue, value);
+        }
+    }
+}
+
+int BarcodeItem::borderWidth() const
+{
+    return m_borderWidth;
+}
+
+void BarcodeItem::setBorderWidth(const int value)
+{
+    if (m_borderWidth != value) {
+        const int oldValue = m_borderWidth;
+        m_borderWidth = value;
+        if (!isLoading()) {
+            update();
+            notify("borderWidth", oldValue, value);
         }
     }
 }
